@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".MainActivity">
+
 
     <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:context=".MainActivity"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -13,11 +12,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="SIMUGlove"
+            android:text="@string/simuglove"
             android:id="@+id/SIMUtitle"
             android:layout_marginTop="10dp"
-            android:layout_alignLeft="@+id/bluetoothStatus"
-            android:layout_alignStart="@+id/bluetoothStatus"
             android:scaleX="1.7"
             android:scaleY="1.7"
             android:ellipsize="end"
@@ -33,7 +30,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="RX:"
+                android:text="@string/rx"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textStyle="bold" />
@@ -43,9 +40,9 @@
                 android:layout_weight="0.9"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:text="Read Buffer"
+                android:text="@string/read_buffer"
                 android:id="@+id/readBuffer"
-                android:layout_centerHorizontal="true" />
+                 />
         </LinearLayout>
 
         <LinearLayout
@@ -56,7 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="0.1"
-                android:text="Status:"
+                android:text="@string/status"
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textStyle="bold" />
@@ -65,59 +62,45 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="0.9"
 
-                android:text="Bluetooth Status"
+                android:text="@string/bluetooth_status"
                 android:id="@+id/bluetoothStatus"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:layout_centerHorizontal="true"
-                android:layout_alignTop="@+id/checkboxLED1" />
+                />
         </LinearLayout>
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bluetooth ON"
-            android:id="@+id/scan"
-            android:layout_centerVertical="true"
-            android:layout_toStartOf="@+id/off"
-            android:layout_toLeftOf="@+id/off" />
+            android:text="@string/bluetooth_on"
+            android:id="@+id/scan" />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Bluetooth OFF"
+            android:text="@string/bluetooth_off"
             android:id="@+id/off"
-            android:layout_alignBottom="@+id/scan"
-            android:layout_toEndOf="@+id/PairedBtn"
-            android:layout_toRightOf="@+id/PairedBtn" />
+            />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Show paired Devices"
+            android:text="@string/show_paired_devices"
             android:id="@+id/PairedBtn"
-            android:layout_below="@+id/scan"
-            android:layout_toStartOf="@+id/discover"
-            android:layout_toLeftOf="@+id/discover" />
+            />
 
         <Button
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Discover New Devices"
+            android:text="@string/discover_new_devices"
             android:id="@+id/discover"
-            android:layout_below="@+id/off"
-            android:layout_toRightOf="@+id/checkboxLED1"
-            android:layout_toEndOf="@+id/checkboxLED1" />
+            />
 
         <ListView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/devicesListView"
             android:choiceMode="singleChoice"
-            android:layout_below="@+id/PairedBtn"
-            android:layout_alignRight="@+id/off"
-            android:layout_alignEnd="@+id/off" />
+            />
 
     </LinearLayout>
-
-</RelativeLayout>

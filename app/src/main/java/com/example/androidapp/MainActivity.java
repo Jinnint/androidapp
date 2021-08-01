@@ -16,7 +16,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,15 +31,8 @@ public class MainActivity extends AppCompatActivity {
     // GUI Components
     private TextView mBluetoothStatus;
     private TextView mReadBuffer;
-    private Button mScanBtn;
-    private Button mOffBtn;
-    private Button mListPairedDevicesBtn;
-    private Button mDiscoverBtn;
     private BluetoothAdapter mBTAdapter;
-    private Set<BluetoothDevice> mPairedDevices;
     private ArrayAdapter<String> mBTArrayAdapter;
-    private ListView mDevicesListView;
-    private CheckBox mLED1;
 
     private Handler mHandler; // Our main handler that will receive callback notifications
     private ConnectedThread mConnectedThread; // bluetooth background worker thread to send and receive data
@@ -59,18 +51,17 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mBluetoothStatus = (TextView) findViewById(R.id.bluetoothStatus);
-        mReadBuffer = (TextView) findViewById(R.id.readBuffer);
-        mScanBtn = (Button) findViewById(R.id.scan);
-        mOffBtn = (Button) findViewById(R.id.off);
-        mDiscoverBtn = (Button) findViewById(R.id.discover);
-        mListPairedDevicesBtn = (Button) findViewById(R.id.PairedBtn);
-        mLED1 = (CheckBox) findViewById(R.id.checkboxLED1);
+        mBluetoothStatus = findViewById(R.id.bluetoothStatus);
+        mReadBuffer = findViewById(R.id.readBuffer);
+        Button mScanBtn = findViewById(R.id.scan);
+        Button mOffBtn = findViewById(R.id.off);
+        Button mDiscoverBtn = findViewById(R.id.discover);
+        Button mListPairedDevicesBtn = findViewById(R.id.PairedBtn);
 
-        mBTArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1);
+        mBTArrayAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1);
         mBTAdapter = BluetoothAdapter.getDefaultAdapter(); // get a handle on the bluetooth radio
 
-        mDevicesListView = (ListView) findViewById(R.id.devicesListView);
+        ListView mDevicesListView = findViewById(R.id.devicesListView);
         mDevicesListView.setAdapter(mBTArrayAdapter); // assign model to view
         mDevicesListView.setOnItemClickListener(mDeviceClickListener);
 
@@ -89,7 +80,7 @@ public class MainActivity extends AppCompatActivity {
 
                 if (msg.what == CONNECTING_STATUS) {
                     if (msg.arg1 == 1)
-                        mBluetoothStatus.setText("Connected to Device: " + (String) (msg.obj));
+                        mBluetoothStatus.setText("Connected to Device: " + msg.obj);
                     else
                         mBluetoothStatus.setText("Connection Failed");
                 }
@@ -103,42 +94,14 @@ public class MainActivity extends AppCompatActivity {
         }
         else {
 
-            mLED1.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    if(mConnectedThread != null) //First check to make sure thread created
-                        mConnectedThread.write("1");
-                }
-            });
 
+            mScanBtn.setOnClickListener(this::bluetoothOn);
 
-            mScanBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    bluetoothOn(v);
-                }
-            });
+            mOffBtn.setOnClickListener(this::bluetoothOff);
 
-            mOffBtn.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    bluetoothOff(v);
-                }
-            });
+            mListPairedDevicesBtn.setOnClickListener(this::listPairedDevices);
 
-            mListPairedDevicesBtn.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v){
-                    listPairedDevices(v);
-                }
-            });
-
-            mDiscoverBtn.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View v){
-                    discover(v);
-                }
-            });
+            mDiscoverBtn.setOnClickListener(this::discover);
         }
     }
 
@@ -210,7 +173,7 @@ public class MainActivity extends AppCompatActivity {
     };
 
     private void listPairedDevices(View view){
-        mPairedDevices = mBTAdapter.getBondedDevices();
+        Set<BluetoothDevice> mPairedDevices = mBTAdapter.getBondedDevices();
         if(mBTAdapter.isEnabled()) {
             // put it's one to the adapter
             for (BluetoothDevice device : mPairedDevices)
@@ -264,7 +227,7 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getBaseContext(), "Socket creation failed", Toast.LENGTH_SHORT).show();
                         }
                     }
-                    if(fail == false) {
+                    if(!fail) {
                         mConnectedThread = new ConnectedThread(mBTSocket);
                         mConnectedThread.start();
 
